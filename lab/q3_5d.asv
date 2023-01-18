@@ -1,0 +1,19 @@
+N1=8;
+N2=16;
+N3=32;
+l = [0:63];
+s1 = [ones(1,8), zeros(1,8)];
+s2 = [ones(1,8), zeros(1,24)];
+x1 = [ones(1,64)];
+x2 = [s1,s1,s1,s1];
+x3 = [s2,s2];
+%subplot(3,1,1),stem(l,x1),title('x1'),xlabel('x1'),ylabel('value');
+%subplot(3,1,2),stem(l,x2),title('x2'),xlabel('x2'),ylabel('value');
+%subplot(3,1,3),stem(l,x3),title('x3'),xlabel('x3'),ylabel('value');
+a1 = (1/N1)*fft(x1);
+a2 = (1/N2)*fft(x2);
+a3 = (1/N3)*fft(x3);
+%subplot(3,1,1),stem(l,abs(a1)),title('a1'),xlabel('a1'),ylabel('value');
+%subplot(3,1,2),stem(l,abs(a2)),title('a2'),xlabel('a2'),ylabel('value');
+%subplot(3,1,3),stem(l,abs(a3)),title('a3'),xlabel('a3'),ylabel('value');
+

@@ -1,0 +1,596 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{minted}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{makecell}
+\usepackage{geometry}
+\usepackage[english]{babel}
+\usepackage{amssymb}
+\usepackage{graphics}
+\usepackage{amsmath}
+\usepackage{graphicx,epsfig}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{subfigure}
+\usepackage{johd}
+
+\usepackage{CJK}
+\usepackage{indentfirst}
+\usepackage{amsmath}
+\usepackage{cases}
+% \usepackage[UTF8]{ctex}
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm
+
+\lstset{
+  language=Matlab,  %代码语言使用的是matlab
+  frame=shadowbox, %把代码用带有阴影的框圈起来
+  rulesepcolor=\color{red!20!green!20!blue!20},%代码块边框为淡青色
+  keywordstyle=\color{blue!90}\bfseries, %代码关键字的颜色为蓝色，粗体
+  commentstyle=\color{red!10!green!70}\textit,    % 设置代码注释的颜色
+  showstringspaces=false,%不显示代码字符串中间的空格标记
+  numbers=left, % 显示行号
+  numberstyle=\tiny,    % 行号字体
+  stringstyle=\ttfamily, % 代码字符串的特殊格式
+  breaklines=true, %对过长的代码自动换行
+  extendedchars=false,  %解决代码跨页时，章节标题，页眉等汉字不显示的问题
+%   escapebegin=\begin{CJK*},escapeend=\end{CJK*},      % 代码中出现中文必须加上，否则报错
+  texcl=true}
+
+
+\title{Project 1 report}
+\author{张骥霄 \quad 杨牧之 \quad 冯柏钧\\
+        \small 12012924\quad 12010422\quad 12011124}
+% \date{2021.Nov}
+
+% \date{March 8, 2022}
+\begin{document}
+
+\maketitle
+\section{Introduction}
+To Help deaf people to hear again, today, a prosthetic device, called the cochlear implant, can be implanted in the inner ear and can restore partial hearing to profoundly deaf people.\par
+To verify the principle of the cochlear implant, we do this project - Speech synthesis 
+and perception with envelope cue.\par
+The main steps of our implementation is to filter the original signal with different bandpass filters, do full-wave rectification and pass a low-pass filer, multiple with a sine wave and finally sum up each components and get the result.
+
+
+\section{Task 1}
+
+
+
+
+
+\section{Task 2 (冯柏钧)}
+\subsection{Task}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.4]{image/p1task2.png}
+\end{figure}
+\subsection{Result}
+Before we use the band-pass filer and the low-pass filter to get the envelopes, we must confirm the properties of the filer first. Since my task pays no attention to the exact order of the low-pass filter, I select the 4 as the number of order of all low-pass filters used in my task. In my task, the band number is always 4, so I plot the certification of one band-pass filter and one low-pass filer as an example. Some other configuration of the filters are listed in the figure. 
+\begin{figure}[H]
+    \centering
+    \text{The certification of one band-pass filter and one low-pass filer}
+    \includegraphics[scale = 0.4]{image/p1t2c.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \text{The waveform of signal 1 after processing with different LPF cut-off frequencies}
+    \includegraphics[scale = 0.4]{image/p1t2s1w.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \text{The waveform of signal 2 after processing with different LPF cut-off frequencies}
+    \includegraphics[scale = 0.4]{image/p1t2s2w.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \text{The Fourier transform of signal 1 after processing with different LPF cut-off frequencies}
+    \includegraphics[scale = 0.4]{image/p1t2s1f.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \text{The Fourier transform of signal 2 after processing with different LPF cut-off frequencies}
+    \includegraphics[scale = 0.4]{image/p1t2s2f.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \text{The power of signal 1 after processing with different LPF cut-off frequencies}
+    \includegraphics[scale = 0.4]{image/p1t2s1p.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \text{The power of signal 1 after processing with different LPF cut-off frequencies}
+    \includegraphics[scale = 0.4]{image/p1t2s2p.png}
+\end{figure}
+
+\subsection{Analysis}
+Within the given range, as the LPF cut-off frequency increases,  the voice of  people becomes clearer.\par
+I test the LPF cut-off frequency to be 4000Hz, it is clearer than the previous work, however, there still exists significant difference with Original file.\par
+I design my program with the thinking of functional programming. Encapsulate my codes to make my work more clear and readable.
+
+
+\section{Task 3}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.4]{image/q1.jpg}
+\end{figure}
+
+
+\section{Task 4}
+
+
+
+
+\input{code}
+
+
+\end{document}
+
+code.tex
+
+\section{Code}
+\subsection{Question 1}
+
+\begin{lstlisting}
+[y1, fs1] = audioread('C_01_01.wav');
+
+[y2, fs2] = audioread('C_01_02.wav');
+
+xlabel('Time (s)')
+ylabel('Signal')
+
+sig1 = repmat(y1, 1, 10);
+sig2 = repmat(y2, 1, 10);
+
+nfft = 512;
+Winodws = hann(nfft);
+noverlap = nfft/2;
+[Pxx1, w1] = pwelch(sig1, Winodws, noverlap, nfft, fs1);
+[Pxx2, w2] = pwelch(sig2, Winodws, noverlap, nfft, fs2);
+
+figure(2)
+subplot(2,1,1)
+plot(w1, Pxx1);
+xlabel('Frequency (Hz)')
+ylabel('Power')
+title("Input speech signal 1")
+subplot(2,1,2)
+plot(w2, Pxx2);
+xlabel('Frequency (Hz)')
+ylabel('Power')
+title("Input speech signal 2")
+
+b1 = fir2(3000, w1/(fs1/2), sqrt(Pxx1/max(Pxx1)));
+b2 = fir2(3000, w2/(fs2/2), sqrt(Pxx2/max(Pxx2)));
+
+[h1, wh1] = freqz(b1, 1, 128);
+[h2, wh2] = freqz(b2, 1, 128);
+
+noise_1 = 1-2*rand(1,fs1);
+noise_2 = 1-2*rand(1,fs2);
+
+result_1 = filter(b1, 1, noise_1);
+result_2 = filter(b2, 1, noise_2);
+
+[Pyy1,w1] =pwelch(result_1,Winodws, noverlap, nfft, fs1);
+[Pyy2,w2] =pwelch(result_2,Winodws, noverlap, nfft, fs2);
+
+figure(3)
+
+subplot(2,1,1)
+plot(w1, Pyy1);
+title("Output SSN signal 1")
+xlabel('Frequency (Hz)')
+ylabel('Power')
+% plot(SSN1)
+subplot(2,1,2)
+plot(w2, Pyy2);
+title("Output SSN signal 2")
+xlabel('Frequency (Hz)')
+ylabel('Power')
+
+%Q1
+\end{lstlisting}
+
+\subsection{Question 2}
+
+\begin{lstlisting}
+clc
+clear
+%the number of bands
+N = 4;
+%get the origin signal
+[x1, fs1] = audioread('C_01_01.wav');
+[x2, fs2] = audioread('C_01_02.wav');
+%the lower bound of the frequency
+fl = 200;
+%the higher bound of the frequency
+fh = 7000;
+%enum cut-off frequencies of the LPF
+fc1 = 20;
+fc2 = 50;
+fc3 = 100;
+fc4 = 400;
+x1 = x1';
+x2 = x2';
+%get the new signals
+y11 = get_wave(x1, fs1, N, fl, fh, fc1);
+y12 = get_wave(x1, fs1, N, fl, fh, fc2);
+y13 = get_wave(x1, fs1, N, fl, fh, fc3);
+y14 = get_wave(x1, fs1, N, fl, fh, fc4);
+
+y21 = get_wave(x2, fs2, N, fl, fh, fc1);
+y22 = get_wave(x2, fs2, N, fl, fh, fc2);
+y23 = get_wave(x2, fs2, N, fl, fh, fc3);
+y24 = get_wave(x2, fs2, N, fl, fh, fc4);
+
+%time scale for the new signals
+t1 = (0:1/fs1:length(x1)/fs1 - 1/fs1);
+t2 = (0:1/fs2:length(x2)/fs2 - 1/fs2);
+
+% plot new signals in time filed
+figure(2)
+subplot(411)
+plot(t1,y11),title('fc = 20Hz'),xlabel('t(s)'),ylabel('amplitude')
+subplot(412)
+plot(t1,y12),title('fc = 50Hz'),xlabel('t(s)'),ylabel('amplitude')
+subplot(413)
+plot(t1,y13),title('fc = 100Hz'),xlabel('t(s)'),ylabel('amplitude')
+subplot(414)
+plot(t1,y14),title('fc = 400Hz'),xlabel('t(s)'),ylabel('amplitude')
+
+figure(3)
+subplot(411)
+plot(t2,y21),title('fc = 20Hz'),xlabel('t(s)'),ylabel('amplitude')
+subplot(412)
+plot(t2,y22),title('fc = 50Hz'),xlabel('t(s)'),ylabel('amplitude')
+subplot(413)
+plot(t2,y23),title('fc = 100Hz'),xlabel('t(s)'),ylabel('amplitude')
+subplot(414)
+plot(t2,y24),title('fc = 400Hz'),xlabel('t(s)'),ylabel('amplitude')
+
+%define the x-axis fot the fourier transform of the new signals
+freq1 = linspace(-fs1/2,fs1/2-1,length(x1));
+freq2 = linspace(-fs2/2,fs2/2-1,length(x2));
+
+%plot the fourier transform
+figure(4)
+subplot(411)
+plot(freq1,fftshift(abs(fft(y11./(length(y11)))))),title('fc = 20Hz'),xlabel('frequency(Hz)'),ylabel('fft')
+subplot(412)
+plot(freq1,fftshift(abs(fft(y12./(length(y12)))))),title('fc = 50Hz'),xlabel('frequency(Hz)'),ylabel('fft')
+subplot(413)
+plot(freq1,fftshift(abs(fft(y13./(length(y13)))))),title('fc = 100Hz'),xlabel('frequency(Hz)'),ylabel('fft')
+subplot(414)
+plot(freq1,fftshift(abs(fft(y14./(length(y14)))))),title('fc = 400Hz'),xlabel('frequency(Hz)'),ylabel('fft')
+
+figure(5)
+subplot(411)
+plot(freq2,fftshift(abs(fft(y21./(length(y21)))))),title('fc = 20Hz'),xlabel('frequency(Hz)'),ylabel('fft')
+subplot(412)
+plot(freq2,fftshift(abs(fft(y22./(length(y22)))))),title('fc = 50Hz'),xlabel('frequency(Hz)'),ylabel('fft')
+subplot(413)
+plot(freq2,fftshift(abs(fft(y23./(length(y23)))))),title('fc = 100Hz'),xlabel('frequency(Hz)'),ylabel('fft')
+subplot(414)
+plot(freq2,fftshift(abs(fft(y24./(length(y24)))))),title('fc = 400Hz'),xlabel('frequency(Hz)'),ylabel('fft')
+
+%calculate the power of the new signals
+[p11,w11] = pwelch(y11,[],[],512,fs1);
+[p12,w12] = pwelch(y12,[],[],512,fs1);
+[p13,w13] = pwelch(y13,[],[],512,fs1);
+[p14,w14] = pwelch(y14,[],[],512,fs1);
+[p21,w21] = pwelch(y21,[],[],512,fs2);
+[p22,w22] = pwelch(y22,[],[],512,fs2);
+[p23,w23] = pwelch(y23,[],[],512,fs2);
+[p24,w24] = pwelch(y24,[],[],512,fs2);
+
+%plot new signals in power field
+figure(6)
+subplot(411)
+plot(w11,p11),title('fc = 20Hz'),xlabel('frequency(Hz)'),ylabel('power(W)')
+subplot(412)
+plot(w12,p12),title('fc = 50Hz'),xlabel('frequency(Hz)'),ylabel('power(W)')
+subplot(413)
+plot(w13,p13),title('fc = 100Hz'),xlabel('frequency(Hz)'),ylabel('power(W)')
+subplot(414)
+plot(w14,p14),title('fc = 400Hz'),xlabel('frequency(Hz)'),ylabel('power(W)')
+
+figure(7)
+subplot(411)
+plot(w21,p21),title('fc = 20Hz'),xlabel('frequency(Hz)'),ylabel('power(W)')
+subplot(412)
+plot(w22,p22),title('fc = 50Hz'),xlabel('frequency(Hz)'),ylabel('power(W)')
+subplot(413)
+plot(w23,p23),title('fc = 100Hz'),xlabel('frequency(Hz)'),ylabel('power(W)')
+subplot(414)
+plot(w24,p24),title('fc = 400Hz'),xlabel('frequency(Hz)'),ylabel('power(W)')
+
+%record the new signals
+audiowrite('P1_1_fc_=_20.wav',y11,fs1);
+audiowrite('P1_1_fc_=_50.wav',y12,fs1);
+audiowrite('P1_1_fc_=_100.wav',y13,fs1);
+audiowrite('P1_1_fc_=_400.wav',y14,fs1);
+
+audiowrite('P1_2_fc_=_20.wav',y21,fs2);
+audiowrite('P1_2_fc_=_50.wav',y22,fs2);
+audiowrite('P1_2_fc_=_100.wav',y23,fs2);
+audiowrite('P1_2_fc_=_400.wav',y24,fs2);
+
+%encapsulate the process with a function
+function res = get_wave(in, fs, N, fl, fh, fc)
+  %predefine the size of the result
+  res = zeros(1,length(in));
+  %calculte the physical distance of human ear corresponding to given frequencies 
+  dl = log10(fl/165.4 + 1)/0.06;
+  dh = log10(fh/165.4 + 1)/0.06;
+  d = (dh - dl)/N;
+  len = length(in)/fs;
+  %define the time scale for the sine signals
+  t = (0:1/fs:len - 1/fs);
+  for n = 1:N
+      %calculate the lower bound and the higher bound of the band-pass
+      %filer
+      l = 165.4*(10^(0.06*(dl + d*(n-1)))-1);
+      h = 165.4*(10^(0.06*(dl + d*n))-1);
+      [b, a] = butter(4, [l, h]/(fs/2));
+      wave = filter(b, a, in);
+      %full-wave recitification
+      wave = abs(wave);
+      [x, y] = butter(4, fc/(fs/2));
+      %plot the certification for the filter
+      if (n == 1) 
+      [h1 ,f1] = freqz(b,a,512,fs);
+      [h2 ,f2] = freqz(x,y,512,fs);
+      figure(1)
+      subplot(211)
+      plot(f1,20*log10(abs(h1)),'r'),axis([0 1400 -10 2]),title(sprintf("the range of frequency of the band-pass filter is from %f Hz to %f Hz",l,h));
+      xlabel('Freqency(Hz)'),ylabel('Magnitude(dB)')
+      subplot(212)
+      plot(f2,20*log10(abs(h2)),'r'),axis([0 1400 -10 2]),title(sprintf("the cut-off frequency of the low-pass filter is %f Hz",fc));
+      xlabel('Freqency(Hz)'),ylabel('Magnitude(dB)')
+      end
+      env = filter(x, y, wave);
+      sin_sig = sin(2 * pi * (l + (h - l)/2)* t);
+      %sum up
+      res = sin_sig.* env + res;
+  end
+  %normalization
+  res = res*norm(in)/norm(res);
+end
+
+
+
+%Q2
+\end{lstlisting}
+
+\subsection{Question 4}
+
+%for C_01_01.wav
+clc;
+clear;
+
+%Set the number of bands to N = 6
+N = 6;
+%Changing LPF Cutoff
+fl = 200;
+fh = 7000;
+fc1 = 20;
+fc2 = 50;
+fc3 = 100;
+fc4 = 400;
+
+%Generate a noisy signal at SNR -5dB
+%C_01_01.wav
+[s1,fs1] = audioread('C_01_01.wav');
+sig1 = s1';
+[pxx1,w1] = pwelch(sig1,[],[],512,fs1);
+b1 = fir2(3000,w1/(fs1/2),sqrt(pxx1/max(pxx1)));
+noise1 = 1-2*rand(1,length(s1));
+SSN1 = filter(b1,1,noise1)./0.65;
+E1 = norm(sig1);
+E2 = norm(SSN1);
+SSN1 = sqrt(E1/E2)*SSN1;
+y1 = sig1 + SSN1;
+y1 = y1/norm(y1)*norm(sig1);
+%sound(y1,fs1);
+y11 = get_wave(y1, fs1, 6, fl, fh, fc1);
+y12 = get_wave(y1, fs1, 6, fl, fh, fc2);
+y13 = get_wave(y1, fs1, 6, fl, fh, fc3);
+y14 = get_wave(y1, fs1, 6, fl, fh, fc4);
+
+audiowrite('P1_1_fc_=_20.wav',y11,fs1);
+audiowrite('P1_1_fc_=_50.wav',y12,fs1);
+audiowrite('P1_1_fc_=_100.wav',y13,fs1);
+audiowrite('P1_1_fc_=_400.wav',y14,fs1);
+
+figure(1)
+subplot(3,1,1)
+plot(1:length(y1),y11)
+title('N = 6 , fc = 20Hz')
+xlabel('t(s)');ylabel('Amplitude')
+subplot(3,1,2)
+f = fs1*(-length(y1)/2:length(y1)/2-1);
+plot(f,fftshift(abs(fft(y11))))
+xlabel('Frequency(Hz)');ylabel('fft')
+subplot(3,1,3)
+[pxx1,w1] = pwelch(y11,[],[],512,fs1);
+plot(w1,20*log10(pxx1))
+xlabel('Frequency(Hz)');ylabel('Power(db)')
+
+figure(2)
+subplot(3,1,1)
+plot(1:length(y1),y12)
+title('N = 6 , fc = 50Hz')
+xlabel('t(s)');ylabel('Amplitude')
+subplot(3,1,2)
+f = fs1*(-length(y1)/2:length(y1)/2-1);
+plot(f,fftshift(abs(fft(y12))))
+xlabel('Frequency(Hz)');ylabel('fft')
+subplot(3,1,3)
+[pxx1,w1] = pwelch(y12,[],[],512,fs1);
+plot(w1,20*log10(pxx1))
+xlabel('Frequency(Hz)');ylabel('Power(db)')
+
+
+figure(3)
+subplot(3,1,1)
+plot(1:length(y1),y13)
+title('N = 6 , fc = 100Hz')
+xlabel('t(s)');ylabel('Amplitude')
+subplot(3,1,2)
+f = fs1*(-length(y1)/2:length(y1)/2-1);
+plot(f,fftshift(abs(fft(y13))))
+xlabel('Frequency(Hz)');ylabel('fft')
+subplot(3,1,3)
+[pxx1,w1] = pwelch(y13,[],[],512,fs1);
+plot(w1,20*log10(pxx1))
+xlabel('Frequency(Hz)');ylabel('Power(db)')
+
+figure(4)
+subplot(3,1,1)
+plot(1:length(y1),y14)
+title('N = 6 , fc = 400Hz')
+xlabel('t(s)');ylabel('Amplitude')
+subplot(3,1,2)
+f = fs1*(-length(y1)/2:length(y1)/2-1);
+plot(f,fftshift(abs(fft(y14))))
+xlabel('Frequency(Hz)');ylabel('fft')
+subplot(3,1,3)
+[pxx1,w1] = pwelch(y14,[],[],512,fs1);
+plot(w1,20*log10(pxx1))
+xlabel('Frequency(Hz)');ylabel('Power(db)')
+
+%for C_01_02.wav
+clc;
+clear;
+
+%Set the number of bands to N = 6
+N = 6;
+%Changing LPF Cutoff
+fl = 200;
+fh = 7000;
+fc1 = 20;
+fc2 = 50;
+fc3 = 100;
+fc4 = 400;
+%Generate a noisy signal at SNR -5dB
+%C_01_02
+[s2,fs2] = audioread('C_01_02.wav');
+sig2 = s2';
+[pxx2,w2] = pwelch(sig2,[],[],512,fs2);
+b2 = fir2(3000,w2/(fs2/2),sqrt(pxx2/max(pxx2)));
+noise2 = 1-2*rand(1,length(s2));
+SSN2 = filter(b2,1,noise2)./0.7;
+E3 = norm(sig2);
+E4 = norm(SSN2);
+SSN2 = sqrt(E3/E4)*SSN2;
+y2 = sig2 + SSN2;
+y2 = y2/norm(y2)*norm(sig2);
+%sound(y2,fs2)
+y21 = get_wave(y2, fs2, 6, fl, fh, fc1);
+y22 = get_wave(y2, fs2, 6, fl, fh, fc2);
+y23 = get_wave(y2, fs2, 6, fl, fh, fc3);
+y24 = get_wave(y2, fs2, 6, fl, fh, fc4);
+
+audiowrite('P1_2_fc_=_20.wav',y21,fs2);
+audiowrite('P1_2_fc_=_50.wav',y22,fs2);
+audiowrite('P1_2_fc_=_100.wav',y23,fs2);
+audiowrite('P1_2_fc_=_400.wav',y24,fs2);
+
+figure(1)
+subplot(3,1,1)
+plot(1:length(y2),y21)
+title('N = 6 , fc = 20Hz')
+xlabel('t(s)');ylabel('Amplitude')
+subplot(3,1,2)
+f = fs2*(-length(y2)/2:length(y2)/2-1);
+plot(f,fftshift(abs(fft(y21))))
+xlabel('Frequency(Hz)');ylabel('fft')
+subplot(3,1,3)
+[pxx2,w1] = pwelch(y21,[],[],512,fs2);
+plot(w1,20*log10(pxx2))
+xlabel('Frequency(Hz)');ylabel('Power(db)')
+
+figure(2)
+subplot(3,1,1)
+plot(1:length(y2),y22)
+title('N = 6 , fc = 50Hz')
+xlabel('t(s)');ylabel('Amplitude')
+subplot(3,1,2)
+f = fs2*(-length(y2)/2:length(y2)/2-1);
+plot(f,fftshift(abs(fft(y22))))
+xlabel('Frequency(Hz)');ylabel('fft')
+subplot(3,1,3)
+[pxx2,w1] = pwelch(y22,[],[],512,fs2);
+plot(w1,20*log10(pxx2))
+xlabel('Frequency(Hz)');ylabel('Power(db)')
+
+figure(3)
+subplot(3,1,1)
+plot(1:length(y2),y23)
+title('N = 6 , fc = 100Hz')
+xlabel('t(s)');ylabel('Amplitude')
+subplot(3,1,2)
+f = fs2*(-length(y2)/2:length(y2)/2-1);
+plot(f,fftshift(abs(fft(y23))))
+xlabel('Frequency(Hz)');ylabel('fft')
+subplot(3,1,3)
+[pxx2,w1] = pwelch(y23,[],[],512,fs2);
+plot(w1,20*log10(pxx2))
+xlabel('Frequency(Hz)');ylabel('Power(db)')
+
+figure(4)
+subplot(3,1,1)
+plot(1:length(y2),y24)
+title('N = 6 , fc = 400Hz')
+xlabel('t(s)');ylabel('Amplitude')
+subplot(3,1,2)
+f = fs2*(-length(y2)/2:length(y2)/2-1);
+plot(f,fftshift(abs(fft(y24))))
+xlabel('Frequency(Hz)');ylabel('fft')
+subplot(3,1,3)
+[pxx2,w1] = pwelch(y24,[],[],512,fs2);
+plot(w1,20*log10(pxx2))
+xlabel('Frequency(Hz)');ylabel('Power(db)')
+
+%function used in above code
+function res = get_wave(in, fs, N, fl, fh, fc)
+  res = zeros(1,length(in));
+  dl = log10(fl/165.4 + 1)/0.06;
+  dh = log10(fh/165.4 + 1)/0.06;
+  d = (dh - dl)/N;
+  len = length(in)/fs;
+  t = (0:1/fs:len - 1/fs);
+  for n = 1:N
+      l = 165.4*(10^(0.06*(dl + d*(n-1)))-1);
+      h = 165.4*(10^(0.06*(dl + d*n))-1);
+      [b, a] = butter(4, [l, h]/(fs/2));
+      wave = filter(b, a, in);
+      wave = abs(wave);
+      [x, y] = butter(4, fc/(fs/2));
+      env = filter(x, y, wave);
+      sin_sig = sin(2 * pi * (l + (h - l)/2)* t);
+      res = sin_sig.* env + res;
+  end
+  res = res*norm(in)/norm(res);
+end
+
+
+
+
+
+
+
+

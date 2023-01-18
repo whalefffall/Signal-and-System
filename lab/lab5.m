@@ -1,0 +1,16 @@
+%A = [1 -0.8];
+%B = [2 0 -1];
+%[H Omega] = freqz(B,A,40,'whole');
+%plot(Omega,abs(H),'*-');
+%xlabel('\omega');
+%ylabel('H(e^{j\omega})');
+%grid;
+A = [1 0.3];
+B = 3;
+t = 0:0.1:2*pi;
+x = cos(t);
+y = lsim(B,A,x,t)';
+subplot(2,1,1),plot(t,x);
+xlim([0 2*pi]);
+subplot(2,1,2),plot(t,y);
+xlim([0 2*pi]);
